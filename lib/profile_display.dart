@@ -102,6 +102,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: CircleAvatar(
+                        backgroundColor: Colors.white,
                           backgroundImage: image.image,
                           minRadius: MediaQuery.of(context).size.width * 0.2,
                           child: (_processing)

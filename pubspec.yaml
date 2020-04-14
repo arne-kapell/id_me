@@ -1,5 +1,5 @@
 name: id_me
-description: A new Flutter project.
+description: All your social media in one place
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.5.0+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -21,9 +21,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.3
-  qr_flutter: ^3.1.0 # remove
   pretty_qr_code: ^1.0.1
-  flutter_qr_bar_scanner: ^1.0.1
+  flutter_qr_bar_scanner: ^1.0.1 # TODO: replace with qr_mobile_vision
   auto_size_text: ^2.1.0
   provider: ^4.0.4
   shared_preferences: ^0.5.6+3
@@ -38,10 +37,21 @@ dependencies:
   flutter_brand_icons: ^1.1.0 # https://simpleicons.org/
   searchable_dropdown: ^1.1.3
   expandable_card: ^0.0.3+1
+  firebase_core: ^0.4.4+3
+  firebase_analytics: ^5.0.11
+  firebase_admob: ^0.9.3+1
+  device_preview: ^0.4.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.4
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "img/IDme-logos_black.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

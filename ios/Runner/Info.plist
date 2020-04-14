@@ -40,8 +40,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NFCReaderUsageDescription</key>
-	<string>Cross device communication</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-4885568839996243~6227192652</string>
 	<false/>
 </dict>
 </plist>

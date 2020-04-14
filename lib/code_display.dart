@@ -8,7 +8,6 @@ import 'package:id_me/models/functions.dart';
 import 'package:id_me/models/profil.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class CodeDisplay extends StatefulWidget {
   @override

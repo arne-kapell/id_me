@@ -13,8 +13,8 @@
     <!-- <uses-feature android:name="android.hardware.nfc" android:required="true" /> -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="id_me"
-        android:icon="@mipmap/ic_launcher">
+        android:label="IDme"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -53,5 +53,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4885568839996243~6227192652"/>
     </application>
 </manifest>

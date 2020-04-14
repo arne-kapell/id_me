@@ -2,13 +2,19 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:expandable_card/expandable_card.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_bar_scanner/qr_bar_scanner_camera.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:id_me/code_display.dart';
 import 'package:id_me/contacts_display.dart';
+import 'package:id_me/models/ad.dart';
 import 'package:id_me/models/data.dart';
 import 'package:id_me/models/functions.dart';
 import 'package:id_me/models/profil.dart';
@@ -29,9 +35,13 @@ void main() async {
   } else {
     own_id = p.getInt('OWN_ID').toString();
   }
-  runApp(MainApp());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => MainApp()
+  ));
 }
 
+FirebaseAnalytics analytics = FirebaseAnalytics();
 class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,16 +49,15 @@ class MainApp extends StatelessWidget {
       title: 'idME',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Baloo',
+          fontFamily: 'Baloo',
           brightness: Brightness.dark,
           primarySwatch: Colors.blueGrey,
           primaryColor: hexColor("#485265"), // Independence - darkblueish
           accentColor: hexColor("#cdcdcd"), // Pastel Gray
           backgroundColor: hexColor("#ebebeb"), // Isabelline
           snackBarTheme: SnackBarThemeData(
-            backgroundColor: hexColor("#ebebeb"), // Isabelline
-            elevation: 5
-          ),
+              backgroundColor: hexColor("#ebebeb"), // Isabelline
+              elevation: 5),
           // scaffoldBackgroundColor: hexColor("#485265"),
           textTheme: TextTheme(
               // primaryColor: Hexcolor("#485265"), // Independence - darkblueish
@@ -59,6 +68,9 @@ class MainApp extends StatelessWidget {
         '/': (context) => HomeScreen(),
       },
       initialRoute: '/',
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
     );
   }
 }
@@ -72,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _controller;
   int _page;
   bool _scan;
+  Ad _ad;
 
   @override
   void initState() {
@@ -96,13 +109,19 @@ class _HomeScreenState extends State<HomeScreen> {
       Profil profil = Profil(false);
       profil.fromString(code.substring(7), notify: false);
       Provider.of<Data>(context, listen: false).add(profil);
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text(profil.name)));
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(profil.name)));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_ad == null) {
+      FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-4885568839996243~6227192652');
+      _ad = new Ad(context);
+    }
+    if (!_ad.hasBanner) {
+      _ad.banner(top: true);
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Profil(true, id: own_id)),
@@ -115,9 +134,24 @@ class _HomeScreenState extends State<HomeScreen> {
             // physics: NeverScrollableScrollPhysics(),
             controller: _controller,
             children: <Widget>[
-              SafeArea(top: true, child: ContactsDisplay()),
-              SafeArea(top: true, child: CodeDisplay()),
-              SafeArea(top: true, child: ProfileDisplay()),
+              SafeArea(
+                  top: true,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: _ad.bannerHeight),
+                    child: ContactsDisplay(),
+                  )),
+              SafeArea(
+                  top: true,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: _ad.bannerHeight),
+                    child: CodeDisplay(),
+                  )),
+              SafeArea(
+                  top: true,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: _ad.bannerHeight),
+                    child: ProfileDisplay(),
+                  )),
             ],
             onPageChanged: (i) => setState(() => _page = i),
           ),
